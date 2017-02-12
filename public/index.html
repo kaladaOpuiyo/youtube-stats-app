@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Welcome to Youtube Analytics | </title>
+
+    <!-- Bootstrap -->
+    <link href="../build/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../build/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.css" rel="stylesheet">
+  </head>
+
+  <body class="">
+    <div class="container body">
+      <div class="main_container">
+        <div class="clearfix"></div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav class="" role="navigation">
+                <br><br><br>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="center">
+            <div class="page-title">
+              <div class="title_left">
+                <h3><b>Youtube Channel Statisics</b></h3>
+              </div>
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group" >
+                    <input name = "channelSearch" type="text" class="form-control" placeholder="Search for channel here...">
+                    <span class="input-group-btn">
+                      <button id="channelSearch-request" class="btn btn-default" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-8 col-sm-8 col-xs-8">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2><b>Channel Details</b></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                  <div id="data-display"></div>
+                    <script id="channel-data-template" type="text/template">
+                    <!-- top tiles -->
+                    <div class="row tile_count" >
+                      <div class="col-md-12"id="channel-data-display">
+                        <div class="col-md-6 col-sm-6 col-xs-6 ">
+                            <img style="display:block; margin: 0 auto; padding-top: 25px;" src={{pic}} alt="Mountain View" />
+                        </div>
+                         <div class="col-md-6 col-sm-12 col-xs-12 tile_stats_count">
+
+                           <span class="count_top"><i class="fa fa-youtube"></i> Channel Name </span>
+                           <div class="count">{{title}}</div>
+
+                          </div>
+                           <div class="col-md-6 col-sm-12 col-xs-12 tile_stats_count">
+                           <span class="count_top"><i class="fa fa-user"></i> View Count </span>
+                           <div class="count green">{{view_Count}}</div>
+                           <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span> -->
+                         </div>
+                         <div class="col-md-6 col-sm-12 col-xs-12 tile_stats_count ">
+                           <span class="count_top"><i class="fa fa-user"></i> Total Subscribers </span>
+                           <div class="count green">{{subscriber_Count}}</div>
+                           <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
+                         </div>
+                           <div class="col-md-6 col-sm-12 col-xs-12 tile_stats_count pull-right">
+                             <span class="count_top"><i class="fa fa-video-camera"></i> Total Uploaded Videos</span>
+                             <div class="count">{{video_Count}}</div>
+                           <!-- <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span> -->
+                         </div>
+
+                      </div>
+
+                    </div>
+                  </script>
+
+
+                </div>
+
+                </div>
+
+
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4 pull-right">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2><b>Channel Search Results</b></h2>
+                      <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                        </li>
+                      </ul>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                      <ol class="" id="channelResult"></ol>
+
+                    </div>
+
+                  </div>
+
+
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                      <div class="x_title">
+                        <h2><b>Video Stats:</b>
+                          <div id="title-display"></div>
+                          <script id="title-template" type="text/template">
+                          <span><i> Data available on <b class="count green">{{vid_Total}}</b> videos</i></span>
+                          </script>
+                        </h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                          <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                          </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                      </div>
+                        <div id="Stats-display"></div>
+                          <script id="channel-Stats-template" type="text/template">
+                        <div class="row tile_count"id="channel-Stats-display">
+                           <div class="col-md-6">
+                             <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
+                               <span class="count_top"><i class="fa fa-youtube"></i> View Total </span>
+                               <div class="count">{{vid_viewCountTotal}}</div>
+                               <span class="count_bottom"></span>
+                             </div>
+                               <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
+                               <span class="count_top"><i class="fa fa-user"></i> Like Count </span>
+                               <div class="count green">{{vid_likeCountTotal}}</div>
+                               <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span> -->
+                             </div>
+                             <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
+                               <span class="count_top"><i class="fa fa-user"></i> Dislike Count </span>
+                               <div class="count green">{{vid_dislikeCountTotal}}</div>
+                               <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
+                             </div>
+                               <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
+                               <span class="count_top"><i class="fa fa-user"></i>  Comment total </span>
+                               <div class="count">{{vid_commentCountTotal}}</div>
+                               <!-- <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span> -->
+                             </div>
+
+                            </div>
+                            <div class="col-md-6">
+                              <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
+                                <span class="count_top"><i class="fa fa-user"></i>Comments per View <i>(per 1000)</i></span>
+                                <div class="count">{{vid_commentsPerView}}</div>
+                                <span class="count_bottom"></span>
+                              </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
+                                  <span class="count_top"><i class="fa fa-user"></i>Likes per View <i>(per 1000)</i></span>
+                                  <div class="count green">{{vid_likesPerView}}</div>
+                                  <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> From last Week</span> -->
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
+                                  <span class="count_top"><i class="fa fa-user"></i> Dislikes per View <i>(per 1000)</i></span>
+                                  <div class="count green">{{vid_dislikesPerView}}</div>
+                                  <!-- <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span> -->
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count">
+                                  <span class="count_top"><i class="fa fa-video-camera"></i> Avg view per video</span>
+                                  <div class="count">{{vid_averageViewsPerVideo}}</div>
+                                  <!-- <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span> -->
+                                </div>
+                                <!-- <div class="col-md-6 col-sm-6 col-xs-12 tile_stats_count ">
+                                  <span class="count_top"><i class="fa fa-video-camera"></i>Channel engagement Score</span>
+                                  <div class="count">{{vid_channelEngagementScore}}</div>
+                                  <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> From last Week</span>
+                                </div> -->
+                            </div>
+                          </div>
+                        </script>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+            <div class="pull-right">
+              Copyright Kalada Opuiyo 2017 | <a href="#">Contact me</a>
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../build/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../build/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/libs/mustache.js"></script>
+    <script src="js/index.js"></script>
+
+  </body>
+</html>
