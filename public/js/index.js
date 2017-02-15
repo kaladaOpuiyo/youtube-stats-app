@@ -2,7 +2,7 @@ var socket = io();
 
 socket.on('connect',function () {
   console.log('connected to server sucessful');
-
+    socket.emit('newConnection',function () {});
 
 });
 
@@ -77,10 +77,18 @@ var channelData = jQuery('#channelResult');
 
   });
 });
+// socket.on('channel-List', function (channelList) {
+// console.log(channelList);
+//   jQuery('#channelResult').empty();
+//   for(var i in channelList){
+//     jQuery('#channelResult')
+//     .append("<a href=#><li id= "+channelList[i].channel_id+">"+  channelList[i].channel_title + " </li></a>");
+//     }
+// });
 
 
-
-socket.on('channel-List', function (channelList) {
+socket.on('channel-List',function (channelList) {
+console.log(channelList);
 
   jQuery('#channelResult').empty();
   for(var i in channelList){
