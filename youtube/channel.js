@@ -3,52 +3,26 @@ const axios = require('axios');
 var url = require('./urls');
 const socketIO = require('socket.io');
 
-var counter=0;
-var videoTotals=0;
-var viewCountTotal =0;
-var likeCountTotal=0;
-var dislikeCountTotal=0;
-var commentCountTotal=0;
-var vidStats=0;
+var counter;
+var videoTotals;
+var viewCountTotal;
+var likeCountTotal;
+var dislikeCountTotal;
+var commentCountTotal;
+var vidStats;
 
-
-class Channel {
-  constructor(id){
-    this.channels = [];
-
-
-
-  }
-
-  addCHannelRoom(room){
-    var ch = {room};
-    this.channels.push(ch);
-    return ch;
-  }
-
-  getchannelList(room){
-  var ch = this.channels.filter((channel)=>channel.room === room);
-  var chArray = channels.map((channel)=>channel.name);
-  return chArray;
+var reset = () => {
+  counter=0;
+  videoTotals=0;
+  viewCountTotal =0;
+  likeCountTotal=0;
+  dislikeCountTotal=0;
+  commentCountTotal=0;
+  vidStats=0;
 }
 
-getCh(room){
-  return this.channels.filter((channel) => channel.room===room)[0]
-}
-removeCh(room){
-  var ch = this.getCh(room);
 
-  if(ch){
-    this.channels = this.channels.filter((channel) => channel.room!==room);
-  }
-  return ch;
-}
-
-// console.log(id);
-// console.log(counter);
-
-
-getChannelList(channel,results){
+var getChannelList = (channel,results) => {
 
   var channelArray = [];
   axios.get(url.searchForChannel(channel)).then((response) => {
@@ -73,11 +47,11 @@ getChannelList(channel,results){
 
 }
 
-getChannelData(chId, results){
+var getChannelData = (chId, results) => {
 
 axios.all([axios.get(url.getChannelStats(chId)), axios.get(url.getUploadStats(chId))]).then(axios.spread((chlstats,uplstats) => {
 
-console.log(chlstats.data.items[0].snippet.thumbnails.high.url);
+// console.log(chlstats.data.items[0].snippet.thumbnails.high.url);
 
 var uploadId = uplstats.data.items[0].contentDetails.relatedPlaylists.uploads;
 
@@ -89,9 +63,8 @@ var uploadId = uplstats.data.items[0].contentDetails.relatedPlaylists.uploads;
         ch_commentCount :  chlstats.data.items[0].statistics.commentCount,
         ch_videoCount :  chlstats.data.items[0].statistics.videoCount,
         address : url.getChannelVideoList(uploadId),
-        playlistId : /playlistId=([^&]+)/.exec(url.getChannelVideoList(uploadId))[1] ?/playlistId=([^&]+)/.exec(url.getChannelVideoList(uploadId))[1]:''
       };
-
+      reset();
       results(channelDataArray);
 
 
@@ -104,16 +77,15 @@ var uploadId = uplstats.data.items[0].contentDetails.relatedPlaylists.uploads;
 }
 
 
-channelStats(address,playlistId,results){
+var channelStats = (address,results)=> {
     var total=0;
+    var playlistId = /playlistId=([^&]+)/.exec(address)[1] ?/playlistId=([^&]+)/.exec(address)[1]:'';
+
      axios.get(address).then((response) =>{
 
        var nextPageToken = response.data.nextPageToken?`&pageToken=${response.data.nextPageToken}`:'';
        var prevPageToken = response.data.prevPageToken?`&pageToken=${response.data.prevPageToken}`:'';
 
-        //
-        // console.log(`test1 ${response.data.items.length == 0}`);
-        // console.log(`test2${!prevPageToken && counter > 0}` );
       if(!prevPageToken && counter > 0 || response.data.items.length == 0){
 
         var  chData = {
@@ -125,48 +97,18 @@ channelStats(address,playlistId,results){
             videoTotals
 
             }
-            counter=0;
-            viewCountTotal=0;
-            likeCountTotal=0;
-            dislikeCountTotal=0;
-            commentCountTotal =0;
-            videoTotals =0;
-
+            reset();
             return results(chData);
 
-         }else{
-
-            var value = this.getTotals(response,total);
+         }
+            var value = getTotals(response,total);
             videoTotals+=value;
+            counter++;
 
-                    counter++;
-                      //Set next playlist page
-                       var listVideoUrl = url.getChannelVideoListWithPageToken(playlistId,nextPageToken);
+            getVidStats(value,response);
 
-
-                          for (var index=0; index < value; index++) {
-
-                            var vidId =response.data.items[index].snippet.resourceId.videoId;
-
-                              //Get Video Data by videoID
-                               axios.get(url.getVideoStatsUrl(vidId)).then((response) => {
-                                 viewCountTotal+= parseInt(response.data.items[0].statistics.viewCount)?parseInt(response.data.items[0].statistics.viewCount):0;
-                                 likeCountTotal+= parseInt(response.data.items[0].statistics.likeCount)?parseInt(response.data.items[0].statistics.likeCount):0;
-                                 dislikeCountTotal+= parseInt(response.data.items[0].statistics.dislikeCount)? parseInt(response.data.items[0].statistics.dislikeCount):0;
-                                 commentCountTotal+= parseInt(response.data.items[0].statistics.commentCount)? parseInt(response.data.items[0].statistics.commentCount):0;
-
-                               },0).catch((e) => {
-
-                                   if(e.message){
-                                       console.log(e);
-                                   }
-                            });
-
-                          }
-                      }
-
-                        // Recursive call to method using nextPageToken
-                        return this.channelStats(listVideoUrl,playlistId,results);
+            // Recursive call to method using nextPageToken
+            return channelStats(url.getChannelVideoListWithPageToken(playlistId,nextPageToken),results);
 
                      }).catch((e) => {
                              if(e.message){
@@ -175,9 +117,32 @@ channelStats(address,playlistId,results){
                         });
 
                 }
+var getVidStats = (value,response) => {
 
+  for (var index=0; index < value; index++) {
+
+    var vidId =response.data.items[index].snippet.resourceId.videoId;
+
+      //Get Video Data by videoID
+       axios.get(url.getVideoStatsUrl(vidId)).then((response) => {
+         viewCountTotal+= parseInt(response.data.items[0].statistics.viewCount)?parseInt(response.data.items[0].statistics.viewCount):0;
+         likeCountTotal+= parseInt(response.data.items[0].statistics.likeCount)?parseInt(response.data.items[0].statistics.likeCount):0;
+         dislikeCountTotal+= parseInt(response.data.items[0].statistics.dislikeCount)? parseInt(response.data.items[0].statistics.dislikeCount):0;
+         commentCountTotal+= parseInt(response.data.items[0].statistics.commentCount)? parseInt(response.data.items[0].statistics.commentCount):0;
+
+       }).catch((e) => {
+
+           if(e.message){
+               console.log(e);
+           }
+      });
+
+    }
+
+
+}
 //Get number of videos per page
-getTotals(response,total){
+var getTotals = (response,total) => {
 
   try {
 
@@ -189,6 +154,4 @@ getTotals(response,total){
               return total;
       }
     }
-
-}
-module.exports = {Channel};
+module.exports = {getChannelList,getChannelData,channelStats};
