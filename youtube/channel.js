@@ -3,18 +3,20 @@ const axios = require('axios');
 var url = require('./urls');
 const socketIO = require('socket.io');
 
-counter=0;
-videoTotals=0;
-viewCountTotal =0;
-likeCountTotal=0;
-dislikeCountTotal=0;
-commentCountTotal=0;
- vidStats=0;
+var counter=0;
+var videoTotals=0;
+var viewCountTotal =0;
+var likeCountTotal=0;
+var dislikeCountTotal=0;
+var commentCountTotal=0;
+var vidStats=0;
 
 
 class Channel {
   constructor(id){
     this.channels = [];
+
+
 
   }
 
@@ -75,6 +77,7 @@ getChannelData(chId, results){
 
 axios.all([axios.get(url.getChannelStats(chId)), axios.get(url.getUploadStats(chId))]).then(axios.spread((chlstats,uplstats) => {
 
+console.log(chlstats.data.items[0].snippet.thumbnails.high.url);
 
 var uploadId = uplstats.data.items[0].contentDetails.relatedPlaylists.uploads;
 
@@ -108,9 +111,9 @@ channelStats(address,playlistId,results){
        var nextPageToken = response.data.nextPageToken?`&pageToken=${response.data.nextPageToken}`:'';
        var prevPageToken = response.data.prevPageToken?`&pageToken=${response.data.prevPageToken}`:'';
 
-
-console.log(`test1 ${response.data.items.length == 0}`);
-console.log(`test2${!prevPageToken && counter > 0}` );
+        //
+        // console.log(`test1 ${response.data.items.length == 0}`);
+        // console.log(`test2${!prevPageToken && counter > 0}` );
       if(!prevPageToken && counter > 0 || response.data.items.length == 0){
 
         var  chData = {
