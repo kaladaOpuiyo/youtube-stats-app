@@ -1,3 +1,3 @@
-var key ='AIzaSyC8XcwcdLPl1_1yRbtVlTVxmdtqYEIz14M';
+var key ='';
 
 module.exports = key;
