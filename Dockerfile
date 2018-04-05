@@ -1,18 +1,19 @@
-FROM node:latest
+FROM centos:7
 
-# Create app directory
-WORKDIR /usr/src/
+RUN yum -y install epel-release
+RUN yum -y install make which npm
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+RUN npm install -g n
+RUN n 6.10.2
+
+
 COPY package*.json ./
 
-RUN npm install
+WORKDIR /usr/src/
 
-# Bundle app source
 COPY . . 
 
-EXPOSE 8090
+RUN npm rebuild
 
+EXPOSE 8090
 CMD [ "npm", "start" ]
