@@ -1,5 +1,4 @@
-
- node {
+node {
     def app
 
     stage('Clone repository') {
@@ -12,7 +11,7 @@
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        app = docker.build("youtube-stats-app")
+        app = docker.build("youtube-stats-app/latest")
     }
 
     stage('Test image') {
@@ -24,3 +23,5 @@
         }
     }
 
+  
+}
