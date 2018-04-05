@@ -1,25 +1,28 @@
 pipeline {
-  agent {
-    dockerfile true
-  }
+ node {
+    def app
 
-    options {
-        disableConcurrentBuilds()
-        buildDiscarder(logRotator(numToKeepStr: '20'))
+    stage('Clone repository') {
+        /* Let's make sure we have the repository cloned to our workspace */
+
+        checkout scm
     }
 
-    stages {
-    
-        stage('Test') {
-          
-            steps {
-                sh 'ls -a'
-                sh 'npm -v'
-                sh 'node -v'
-                sh 'printenv'
-           }
+    stage('Build image') {
+        /* This builds the actual image; synonymous to
+         * docker build on the command line */
+
+        app = docker.build("youtube-stats-app")
+    }
+
+    stage('Test image') {
+        /* Ideally, we would run a test framework against our image.
+         * For this example, we're using a Volkswagen-type approach ;-) */
+
+        app.inside {
+            sh 'echo "Tests passed"'
         }
-       
     }
 
+   
  }
