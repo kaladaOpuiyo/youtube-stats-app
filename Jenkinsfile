@@ -12,7 +12,7 @@ node {
          * docker build on the command line */
 
         app = docker.build("youtube-stats-app")
-        sh docker run --rm -d -p 8090:8090 youtube-stats-app:latest
+      
     }
 
     stage('Test image') {
@@ -22,6 +22,11 @@ node {
         app.inside {
             sh 'echo "Tests passed"'
         }
+    }
+    
+    stage('Deploy') {
+      sh docker run --rm -d -p 8090:8090 youtube-stats-app:latest
+    
     }
 
   
