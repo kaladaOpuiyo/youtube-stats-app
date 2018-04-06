@@ -22,7 +22,7 @@ const Home = (props) => {
                 <Panel.Heading>
                   <Panel.Title toggle>Channel Search Results</Panel.Title>
                 </Panel.Heading>
-                <Panel.Body collapsible> data</Panel.Body>
+                <Panel.Body collapsible>Channel Search data</Panel.Body>
               </Panel>
             </PanelGroup>
           </Col>
@@ -34,7 +34,7 @@ const Home = (props) => {
                 <Panel.Heading>
                   <Panel.Title toggle>Video Stats</Panel.Title>
                 </Panel.Heading>
-                <Panel.Body collapsible>data</Panel.Body>
+                <Panel.Body collapsible> Video Stats data</Panel.Body>
               </Panel>
             </PanelGroup>
           </Col>
@@ -46,7 +46,7 @@ const Home = (props) => {
                 <Panel.Heading>
                   <Panel.Title toggle>Video Stats Graph</Panel.Title>
                 </Panel.Heading>
-                <Panel.Body collapsible>data</Panel.Body>
+                <Panel.Body collapsible> Video Stats Graph data</Panel.Body>
               </Panel>
             </PanelGroup>
           </Col>
