@@ -27,7 +27,7 @@ node {
     }
     
     stage('Deploy') {
-    sh "docker run --rm -d -p 8090:8090 youtube-stats-app:latest"
+    sh "docker run --rm -d -p 8090:8090 youtube-stats-app:latest" -e $YOUTUBE_API_KEY -e $YOUTUBE_V3_URL
     }
     
   
