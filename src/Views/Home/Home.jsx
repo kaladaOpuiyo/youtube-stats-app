@@ -12,7 +12,7 @@ const Home = (props) => {
                 <Panel.Heading>
                   <Panel.Title toggle>Channel Details</Panel.Title>
                 </Panel.Heading>
-                <Panel.Body collapsible> data</Panel.Body>
+                <Panel.Body collapsible>Channel Details< data</Panel.Body>
               </Panel>
             </PanelGroup>
           </Col>
